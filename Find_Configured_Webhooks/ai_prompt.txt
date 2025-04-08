@@ -1,0 +1,41 @@
+I want to create a python script that uses the Meraki Python SDK to list all the Webhook HTTP servers against each network in a Meraki Organization, I want this to be reported in an excel file.
+
+The script should have a variable key for me to paste in my Meraki API Key and a vaiable for me to specifiy the Organization ID to be used.
+
+The script first should get a list of all the Networks in the Organization ID that was coded in the variable, it should do this by using the Meraki API call, getOrganizationNetworks. In the return data for this API call there will be an id field returned for every network in the Organization, this data looks like this for example:
+
+[
+{
+"id": "N_24329156",
+"organizationId": "2930418",
+"name": "Main Office",
+"productTypes": [
+"appliance",
+"switch",
+"wireless"
+],
+"timeZone": "America/Los_Angeles",
+"tags": [ "tag1", "tag2" ],
+"enrollmentString": "my-enrollment-string",
+"url": "https://n1.meraki.com//n//manage/nodes/list",
+"notes": "Additional description of the network",
+"isBoundToConfigTemplate": false
+}
+]
+
+The script should then take every id that was returned from the first step and loop through that list of id's against the API call getNetworkWebhooksHttpServers, the return data should look like this
+
+[
+{
+"id": "aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vbXlfY3VzdG9tX3dlYmhvb2s=",
+"name": "Example Webhook Server",
+"url": "https://www.example.com/my_custom_webhook",
+"networkId": "N_12345678",
+"payloadTemplate": {
+"payloadTemplateId": "wpt_00001",
+"name": "Meraki (included)"
+}
+}
+]
+
+The Data collected should then be colated and output to an excel spreadsheet that shows the following data from the call getNetworkWebhooksHttpServers "networkId", "url" "name" and the "name" from the getOrganizationNetworks call

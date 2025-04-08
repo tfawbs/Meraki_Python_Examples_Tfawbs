@@ -6,6 +6,6 @@ There is some assumed level of knowledge on how to 'use' Python for most of thes
 
 ## Tips
 
-It's best to run these in the own virtual environements with Python, if you're unsure how to do this, I found this [video to be a great guide][def]
+It's best to run these in their own virtual environements with Python, if you're unsure how to do this, I found this [video to be a great guide][def]
 
 [def]: https://www.youtube.com/watch?v=Y21OR1OPC9A

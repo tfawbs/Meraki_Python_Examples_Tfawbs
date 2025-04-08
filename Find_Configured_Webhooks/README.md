@@ -24,6 +24,10 @@ To run the script:
 2. Fill in your API key and Org ID on lines 5 & 6
 3. Run python3 main.py 
 
-I would recommend running this in a virtual environment, see the Tips section in the top readme for more information.
+I would recommend running this in a virtual environment, see the Tips section in the top readme for more information on how to do this.
 
-For any troubleshooting I issues I would as always suggest Google is your friend and AI tools are excellent to build and troubleshoot with.
+For any troubleshooting issues I would suggest Search Engines as the first point of call, and using AI tools to assist work through and build out as they are execellent at troubleshooting and adding onto the existing script.
+
+## Disclaimer
+
+This script was built with AI assistance (GPT-4o), for the prompt I used see the ai_prompt.txt file
