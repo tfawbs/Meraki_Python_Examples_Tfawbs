@@ -1,3 +1,5 @@
+# Update Layer 3 Firewall Rules
+
 This script is designed to allow you to add Layer 3 firewall rules to a network from a JSON file which contains a set of standard rules or templated rules you want applied everywhere.
 
 For example, consider this as a use case, you need to roll out a new set of L3 firewall rules to many Meraki Networks for a new app or service deployment, this takes time at scale and can result in human error making it a problem at the click-ops level.
