@@ -24,10 +24,10 @@ To run the script:
 2. Fill in your API key and Org ID on lines 5 & 6
 3. Run python3 main.py 
 
-I would recommend running this in a virtual environment, see the Tips section in the top readme for more information on how to do this.
+I recommend you run this in a Python Virtual Environment, if you're unfamiliar how to do that check out this [video](https://www.youtube.com/watch?v=Y21OR1OPC9A)
 
-For any troubleshooting issues I would suggest Search Engines as the first point of call, and using AI tools to assist work through and build out as they are execellent at troubleshooting and adding onto the existing script.
+For any troubleshooting issues I would suggest Search Engines as the first point of call and using AI tools to assist work through and build out the script as they are excellent at troubleshooting and adding onto the existing script.
 
 ## Disclaimer
 
-This script was built with AI assistance (GPT-4o), for the prompt I used see the ai_prompt.txt file
+This script was built with AI assistance (GPT-4o), for the prompt I used see the ai_prompt.txt file. This script is provided with no warranty or support it is provided with the intent to be learnt from and built on. Please always follow best practices when engaging with the Meraki API, Python and any other coding tools.

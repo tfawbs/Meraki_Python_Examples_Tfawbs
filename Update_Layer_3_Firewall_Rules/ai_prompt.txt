@@ -1,0 +1,93 @@
+I want to create a python script that uses the Meraki Python SDK, the script is designed to get a list of existing layer 3 firewall rules from a Meraki Network that the user specifies, and append those existing layer 3 firewall rules to a standard list of rules that is stored in a local file, then upload that list back to the network. Resulting in a set of existing rules + the standard firewall rules being configured on the network. 
+
+The script should first ask the user what is the network they want to target and run the rest of the script against, it should then get a list of all of the Layer 3 firewall rules that are in the network the user specified and should store that list of Layer 3 firewall rules in a json file with the NetworkID used as the name of the file, for example networkid.json. After doing this it should get a list of standard layer 3 firewall rules that will be stored in a file in the same directory as the script called standard-rules.json, it should combine these two lists of firewall rules together with the rules from the standard-rules.json file appended to the bottom of the list. Lastly it should take this newly appended list of layer 3 firewall rules and upload it against the networkID so the network has this list of rules.
+
+The script should have a variable key for me to put in my Meraki API Key. It should also have a variable for me to store my Organization ID to be used in the script.
+
+Let’s look at how we can do all this in more detail, for the first step where it gets a list of networks it can use the Meraki API call getOrganizationNetworks within the Meraki Python SDK. This should return an output like the following:
+
+[
+    {
+        "id": "N_24329156",
+        "organizationId": "2930418",
+        "name": "Main Office",
+        "productTypes": [
+            "appliance",
+            "switch",
+            "wireless"
+        ],
+        "timeZone": "America/Los_Angeles",
+        "tags": [ "tag1", "tag2" ],
+        "enrollmentString": "my-enrollment-string",
+        "url": "https://n1.meraki.com//n//manage/nodes/list",
+        "notes": "Additional description of the network",
+        "isBoundToConfigTemplate": false
+    }
+]
+
+This data can be cut down to a list of the network names using the "name" value and presented to the user in terminal for them to select a network to run the script against. When the user chooses a network the "id" of the network that related to the name can be passed on to following tasks as "networkId"
+
+The next task is to get a list of all the existing layer 3 firewall rules in this chosen network. To do this we can use the Meraki API getNetworkApplianceFirewallL3FirewallRules within the Meraki Python SDK. This should return an output list like the following:
+
+{
+    "rules": [
+        {
+            "comment": "Allow TCP traffic to subnet with HTTP servers.",
+            "policy": "allow",
+            "protocol": "tcp",
+            "destPort": "443",
+            "destCidr": "192.168.1.0/24",
+            "srcPort": "Any",
+            "srcCidr": "Any",
+            "syslogEnabled": false
+        }
+    ]
+}
+
+These rules are what we should store in the json file with the networkid as the file name, we want to store this data as both a backup copy and to be used when we append it to the standard-rules.json file in later tasks.
+
+Next the script is going to need to get the contents of the standard-rules.json, you can see I’ve attached a copy of what this could look like.
+
+Next the script is going to need to append the networkid.json file and the standard-rules.json togeather, it should put the rules from standard-rules.json at the end.
+
+Lastly the script will need to take this appended list of layer 3 firewall rules and run the Meraki API call updateNetworkApplianceFirewallL3FirewallRules which is in the Meraki Python SDK, this call should be able to take a JSON body of data, it will look like this as an example
+
+{
+    "rules": [
+        {
+            "comment": "Allow TCP traffic to subnet with HTTP servers.",
+            "policy": "allow",
+            "protocol": "tcp",
+            "destPort": "443",
+            "destCidr": "192.168.1.0/24",
+            "srcPort": "Any",
+            "srcCidr": "Any",
+            "syslogEnabled": false
+        }
+    ]
+}
+
+Can you help create this script for me?
+
+------------- Outcome -------------
+I realised after running the script that it was also picking up the default any any outbound rule, this was creating a problem so I went back to the AI with this in the next prompt to have it stop picking up the default any any outbound rule
+------------- Next Prompt -------------
+
+Awesome that looks good and works exactly how I expected! There is one unforeseen problem I've found, there is a default built-in layer 3 firewall rule that Meraki always sets and is unremovable called “Default rule” that allows all traffic outbound, it has the following JSON value for your context
+
+    {
+      "comment": "Default rule",
+      "policy": "allow",
+      "protocol": "any",
+      "srcPort": "Any",
+      "srcCidr": "Any",
+      "destPort": "Any",
+      "destCidr": "Any",
+      "syslogEnabled": false
+    },
+
+This is an issue because in Step 4 when we GET all the existing firewall rules, this “Default Rule” rule is included, but since it is also default so we don’t need to capture it. It also creates a problem by capturing it, when we apply all the rules in step 7 we add the “Default rule” again and create a security hole.
+
+We need to update the script so that in or after step 4 when the script GETs the existing firewall rules, it omits “Default Rule” this is probably easy for us to do as “Default Rule” will always be the last rule in the JSON output so we could exclude it that way by always omitting/deleting the last rule when we GET the rules. This is probably safest way since it will always be the last firewall rule in the GET.
+
+Can you update the script to perform this?

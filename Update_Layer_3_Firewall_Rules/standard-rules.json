@@ -1,0 +1,34 @@
+{
+  "rules": [
+    {
+      "comment": "Allow TCP traffic to subnet with HTTP servers.",
+      "policy": "allow",
+      "protocol": "tcp",
+      "destPort": "443",
+      "destCidr": "192.168.1.0/24",
+      "srcPort": "Any",
+      "srcCidr": "Any",
+      "syslogEnabled": false
+    },
+    {
+      "comment": "Block 1.1.1.1",
+      "policy": "deny",
+      "protocol": "tcp",
+      "srcPort": "Any",
+      "srcCidr": "Any",
+      "destPort": "Any",
+      "destCidr": "1.1.1.1",
+      "syslogEnabled": false
+    },
+    {
+      "comment": "Block 12.12.12.12",
+      "policy": "deny",
+      "protocol": "tcp",
+      "srcPort": "Any",
+      "srcCidr": "Any",
+      "destPort": "Any",
+      "destCidr": "12.12.12.12",
+      "syslogEnabled": false
+    }
+  ]
+}
