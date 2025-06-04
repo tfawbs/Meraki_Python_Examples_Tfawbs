@@ -6,7 +6,7 @@ API_KEY = "MY_API_KEY_HERE"
 ORGANIZATION_ID = "MY_ORG_ID_HERE"
 
 # Initialize Meraki client
-dashboard = meraki.DashboardAPI(API_KEY)
+dashboard = meraki.DashboardAPI(API_KEY, caller='PythonExamples/1.0 TFawbs')
 
 # Create a workbook and select the active worksheet
 workbook = openpyxl.Workbook()

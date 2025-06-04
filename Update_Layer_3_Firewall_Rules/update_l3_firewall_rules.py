@@ -7,7 +7,7 @@ API_KEY = "ENTER_YOUR_API_KEY_HERE"
 ORGANIZATION_ID = "ENTER_YOUR_ORG_ID_HERE"
 
 # Initialize Meraki client
-dashboard = meraki.DashboardAPI(API_KEY)
+dashboard = meraki.DashboardAPI(API_KEY, caller='PythonExamples/1.0 TFawbs')
 
 # Step 1: Get all networks in the organization
 networks = dashboard.organizations.getOrganizationNetworks(ORGANIZATION_ID)
