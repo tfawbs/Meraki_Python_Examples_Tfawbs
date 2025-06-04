@@ -7,7 +7,7 @@ For example, consider this as a use case, you need to roll out a new set of L3 f
 The script allows you to configure these rules one time in the standard-rules.json file. Running the script will add these rules to the existing Layer 3 rules in a network you specify without overwriting any existing rules!
 
 It does this by taking the following steps:
-1. Get a list of all Network IDs in a the OrgID
+1. Get a list of all Network IDs in the OrgID
 2. Ask the user which network to target (Listed by name in the terminal)
 3. Get a list of the existing Layer 3 Firewall rules for that network
 4. Omit the Default Any Any Outbound Rule from this list
