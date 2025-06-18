@@ -1,0 +1,87 @@
+I want to create a Python script using the Meraki Python SDK that does the following task, identify switch ports that have had no usage in the last 31 days (timespan 2678400) and record the Port ID (presented as portId), it then takes this portId and runs another task to disable the ports that have had no usage. The goal is security by disableing unused switch ports.
+
+The script should have a variable for me to paste in my API Key and the Switch Serial Number we're going to target.
+
+To do this we have a Meraki API called getDeviceSwitchPortsStatuses, this requires a serial number of a switch and the timespan value of 2678400. It will then return values that look like this example for all switch ports on that switch:
+
+[
+  {
+    "portId": "1",
+    "enabled": true,
+    "status": "Disconnected",
+    "isUplink": false,
+    "errors": [
+      "Port disconnected"
+    ],
+    "warnings": [],
+    "speed": "",
+    "duplex": "",
+    "securePort": {
+      "enabled": true,
+      "active": false,
+      "authenticationStatus": "Enabled",
+      "configOverrides": {
+
+      }
+    },
+    "spanningTree": {
+      "statuses": []
+    },
+    "poe": {
+      "isAllocated": false
+    },
+    "usageInKb": {
+      "total": 566970,
+      "sent": 444858,
+      "recv": 122112
+    },
+    "lldp": {
+      "systemName": "Meraki MX68CW",
+      "systemDescription": "Meraki MX68CW LTE & 802.11ac Router/Security Appliance - WW",
+      "chassisId": "ac:17:c8:c5:f3:13",
+      "portId": "0",
+      "portDescription": "internet port 0",
+      "systemCapabilities": ""
+    },
+    "clientCount": 2,
+    "powerUsageInWh": 0,
+    "trafficInKbps": {
+      "total": 1.8,
+      "sent": 1.4,
+      "recv": 0.4
+    }
+  },
+
+Looking at the sample output above I think we can determine if there was a client connected to the switch port by using the value "clientCount". I think the script should look at this value and if it anything than 0 it should record the portId to be disabled. In the above example we see clientCount = 2 so this port should not be disabled
+
+For the task that disables the port we have the Meraki API updateDeviceSwitchPort, this requires the serial number and the portId, we also need to configure only the parameter called enabled and set it to false in order to disable the port. If we feed it these values and then loop through every portId identified that should do the required job.
+
+Can you write this script?
+
+------------------------------------------------------------------------------------------------------------
+EXPANDING PROMPT TO TAKE A SOURCE FILE OF SWITCH SERIALS
+------------------------------------------------------------------------------------------------------------
+
+Awesome that looks to work exactly as intended, great work! Let’s build on this now to make it more efficient at scale, because Meraki networks can have many switches, we should allow the user to provide the script with a source file that has a list of all the switch serials that they want to target. 
+
+Can you update the script so instead of a variable that has a single serial number there’s a source file that the user inputs all the switch serials into, the script imports that source file of serials, then the script runs against the process against each serial in the list.
+
+The source file should be in the same directory as the script and it should be called switch_serials.txt
+
+------------------------------------------------------------------------------------------------------------
+CHANGING METRIC FROM CLIENTCOUNT TO USAGEINKB 
+------------------------------------------------------------------------------------------------------------
+
+Awesome that looks good and works as expected! 
+I’ve noticed a problem that I didn’t think about when we started, clientCount is not the best choice of a metric to see if a port has been used in the last 31 days, it’s good until we start considering ports with spanning tree and redundant links, ports in a discarding state will never show a client count, the script will disable them even though they’re enabled and should be. 
+
+It's for that reason I think we should move to using the metrics in “usageInKb” as an example this will show the number of Kb that has passed through a port there is a value called “total” under "usageInKb" as shown in the example block below.
+
+    "usageInKb": {
+      "total": 566970,
+      "sent": 444858,
+      "recv": 122112
+
+I think we should look for any port that has a "usageInKb" "total" of 0 and if so disable those ports as logically they have had nothing connected and passed no traffic. 
+
+Can you please update the script to do this?
