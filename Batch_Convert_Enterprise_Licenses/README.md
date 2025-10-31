@@ -1,8 +1,8 @@
-# Meraki License Converter
+# Meraki Bulk Update Network Feature Tier Script
 
-This script is designed to convert the feature tier type of Meraki networks in an Subscription or Enterprise Agreement Subscription model Organization, by using the Meraki Dashboard API batch operation. 
+This script is designed to convert the feature tier type of Meraki networks in an Subscription or Enterprise Agreement Subscription model-based Organization, it does this by using the Meraki Dashboard API batch operation. 
 
-This script was written in mind for Organizations with an EA and many networks that need to convert the feature tier from Essentials to Advantage, however it works either way or could be used as a single source of truth file.
+This script was written in mind for Organizations with an EA and many networks that needs to convert the feature tier from Essentials to Advantage for these networks on mass, however it works in either direction or it could be used as a single source of truth file for your feature tier to network assignments.
 
 NOTE: As of 31st October 2025, this script is using an early access BETA API, as support for this endpoint in the Meraki Python Library is not yet available.
 
